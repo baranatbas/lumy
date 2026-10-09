@@ -43,6 +43,13 @@ export interface ContactInfo {
   workingHours: string;
   instagram: string;
   facebook: string;
+  linkedin?: string;
+  showPhone?: boolean;
+  showEmail?: boolean;
+  showAddress?: boolean;
+  showInstagram?: boolean;
+  showFacebook?: boolean;
+  showLinkedin?: boolean;
 }
 
 export interface EmailNotificationConfig {
@@ -77,6 +84,8 @@ export interface SiteSettings {
 
   // Navbar
   navCatalog?: string;
+  navProcess?: string;
+  navWhy?: string;
   navWholesale?: string;
   navAbout?: string;
   navContact?: string;
@@ -120,6 +129,7 @@ export interface SiteSettings {
   catalogNoPriceText?: string;
   catalogInStockText?: string;
   catalogOutOfStockText?: string;
+  catalogLoadMoreText?: string;
 
   // About Section
   aboutBadgeIcon?: string;
@@ -172,15 +182,22 @@ export interface SiteSettings {
   footerCol4Title?: string;
   footerCopyright?: string;
   footerTagline?: string;
+  footerLogoUrl?: string;
+  footerMascotUrl?: string;
 
   // Floating WhatsApp
   floatingWhatsappText?: string;
+  showFloatingWhatsapp?: boolean;
 
   // New Editorial Layout Customization Fields (Mockup matching)
   heroKicker?: string;
   heroCtaText?: string;
   heroCtaLink?: string;
   heroImageUrl?: string;
+  heroMobileImageUrl?: string;
+  heroMobileOverlayOpacity?: number; // 0 to 100 opacity for the mobile left-side gradient wash
+  heroMobileCropX?: number;
+  heroMobileCropZoom?: number;
 
   processKicker?: string;
   processTitle?: string;
@@ -192,8 +209,15 @@ export interface SiteSettings {
   productsTitle?: string;
   productsSubtitle?: string;
   productsCtaText?: string;
+  spotlight1Title?: string;
+  spotlight1Image?: string;
+  spotlight1CategoryId?: string;
+  spotlight2Title?: string;
+  spotlight2Image?: string;
+  spotlight2CategoryId?: string;
 
   whyKicker?: string;
+  whyTitle?: string;
   whyNote?: string;
   whyImageUrl?: string;
   whyFeatures?: WhyFeature[];
@@ -281,6 +305,13 @@ export async function getDatabase(): Promise<DatabaseSchema> {
             whyFeatures: (parsed.settings.whyFeatures && parsed.settings.whyFeatures.length > 0)
               ? parsed.settings.whyFeatures
               : defaults.settings.whyFeatures,
+            logoUrl: parsed.settings.logoUrl || defaults.settings.logoUrl || '/images/lumy_logo_color.png',
+            spotlight1Title: parsed.settings.spotlight1Title || defaults.settings.spotlight1Title,
+            spotlight1Image: parsed.settings.spotlight1Image || defaults.settings.spotlight1Image,
+            spotlight1CategoryId: parsed.settings.spotlight1CategoryId || defaults.settings.spotlight1CategoryId,
+            spotlight2Title: parsed.settings.spotlight2Title || defaults.settings.spotlight2Title,
+            spotlight2Image: parsed.settings.spotlight2Image || defaults.settings.spotlight2Image,
+            spotlight2CategoryId: parsed.settings.spotlight2CategoryId || defaults.settings.spotlight2CategoryId,
           };
           memoryDb = parsed as DatabaseSchema;
           return memoryDb;

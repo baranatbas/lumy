@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { SiteSettings, ProcessStep } from '@/lib/db';
-import { ArrowRight } from 'lucide-react';
 
 interface ProcessSectionProps {
   settings: SiteSettings;
@@ -45,14 +44,12 @@ export default function ProcessSection({ settings }: ProcessSectionProps) {
   const description =
     settings.processSubtitle ||
     'Fikirlerinizi yaratıcı tasarım, yüksek kaliteli malzemeler ve güvenilir bir üretim süreciyle hayata geçiriyoruz.';
-  const ctaText = settings.processCtaText || 'SÜRECİMİZİ KEŞFEDİN →';
   const steps = settings.processSteps && settings.processSteps.length > 0 ? settings.processSteps : DEFAULT_STEPS;
 
   return (
     <section
       id="process"
-      style={{ backgroundColor: 'var(--process-bg)' }}
-      className="py-20 sm:py-28 border-t border-current/10 relative transition-colors"
+      className="py-20 sm:py-28 bg-white border-y border-stone-200/80 relative transition-colors shadow-2xs"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         
@@ -81,54 +78,42 @@ export default function ProcessSection({ settings }: ProcessSectionProps) {
             >
               {description}
             </p>
-
-            <div className="pt-2">
-              <a
-                href="#contact"
-                style={{
-                  color: 'var(--text-main)',
-                  borderColor: 'var(--text-main)',
-                }}
-                className="group inline-flex items-center gap-2 text-xs font-bold tracking-[0.15em] uppercase border-b pb-1 transition-all"
-              >
-                <span>{ctaText.replace('→', '').trim()}</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </a>
-            </div>
           </div>
 
-          {/* Right Column: 4 Sequential Steps */}
+          {/* Right Column: 4 Clean Process Cards with Step Numbers and Images */}
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               {steps.map((step, index) => (
                 <div
                   key={step.id || index}
-                  style={{ backgroundColor: 'var(--card-bg)' }}
-                  className="rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 border border-current/10 shadow-sm hover:shadow-md transition-all flex flex-col group"
+                  className="flex flex-col space-y-3 group"
                 >
-                  {/* Step Image */}
-                  <div className="w-full aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-current/5 mb-3.5 relative">
+                  <div className="w-full aspect-square rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 bg-stone-100 border border-stone-200/70 relative">
                     <img
                       src={step.imageUrl || '/images/hero_hedgehog.jpg'}
-                      alt={`${step.stepNumber} ${step.stepLabel}`}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      alt={step.stepLabel || 'Üretim süreci'}
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 rounded-2xl sm:rounded-3xl"
                     />
+                    <span className="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-xs text-stone-900 text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded-lg shadow-2xs border border-black/5">
+                      {step.stepNumber || `0${index + 1}`}
+                    </span>
                   </div>
 
-                  {/* Step Text Info */}
-                  <div className="space-y-1 px-1 pb-1">
-                    <h3
+                  <div className="space-y-1">
+                    <h4
                       style={{ color: 'var(--text-main)' }}
-                      className="text-xs font-extrabold tracking-wider uppercase"
+                      className="text-xs font-black tracking-wider uppercase"
                     >
-                      {step.stepNumber} — {step.stepLabel}
-                    </h3>
-                    <p
-                      style={{ color: 'var(--text-muted)' }}
-                      className="text-[11px] leading-relaxed font-normal"
-                    >
-                      {step.description}
-                    </p>
+                      {step.stepLabel}
+                    </h4>
+                    {step.description && (
+                      <p
+                        style={{ color: 'var(--text-muted)' }}
+                        className="text-[11px] leading-tight line-clamp-2"
+                      >
+                        {step.description}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

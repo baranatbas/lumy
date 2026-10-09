@@ -1,11 +1,11 @@
 {
   "settings": {
     "theme": {
-      "siteBg": "#FAF8F5",
+      "siteBg": "#EDE9E0",
       "textColor": "#18181B",
       "mutedTextColor": "#71717A",
       "cardBg": "#FFFFFF",
-      "processBg": "#F4F0E8",
+      "processBg": "#EDE9E0",
       "accentColor": "#18181B",
       "accentTextColor": "#FFFFFF",
       "footerBg": "#141414",
@@ -152,6 +152,7 @@
     "footerCopyright": "Tüm Hakları Saklıdır.",
     "footerTagline": "Peluş ve çocuk sevgisiyle üretilmiştir",
     "floatingWhatsappText": "🧸 Bize WhatsApp'tan Yazın!",
+    "showFloatingWhatsapp": false,
     "emailNotification": {
       "enabled": true,
       "recipientEmail": "samet.candr2001@gmail.com",
@@ -160,7 +161,9 @@
       "smtpUser": "",
       "smtpPass": ""
     },
-    "logoUrl": "",
+    "logoUrl": "/images/lumy_logo_color.png",
+    "footerLogoUrl": "",
+    "footerMascotUrl": "",
     "processKicker": "ÜRETİM SÜRECİMİZ",
     "processTitle": "Çizimden gülümsemeye.",
     "processSubtitle": "Fikirlerinizi yaratıcı tasarım, yüksek kaliteli malzemeler ve güvenilir bir üretim süreciyle hayata geçiriyoruz.",
@@ -199,7 +202,14 @@
     "productsTitle": "Bir oyuncaktan çok daha fazlası.",
     "productsSubtitle": "Yumuşacık, sevimli ve karakter dolu — peluş oyuncaklarımız markalar, etkinlikler ve özel projeler için tasarlandı.",
     "productsCtaText": "TÜM ÜRÜNLERİ GÖRÜNTÜLE →",
+    "spotlight1Title": "Peluş Oyuncaklar",
+    "spotlight1Image": "/images/category_pelus_bear.png",
+    "spotlight1CategoryId": "pelus-oyuncaklar",
+    "spotlight2Title": "Tekstil Ürünleri",
+    "spotlight2Image": "/images/category_textil_bunny.png",
+    "spotlight2CategoryId": "tekstil-urunleri",
     "whyKicker": "NEDEN LUMY TOYS?",
+    "whyTitle": "Her dikişte sevgi, her detayda kusursuz güven.",
     "whyNote": "Gerçek ortaklıklar. Kalıcı anılar. ♡",
     "whyImageUrl": "/images/why_hedgehog.jpg",
     "whyFeatures": [
@@ -233,42 +243,26 @@
   },
   "categories": [
     {
-      "id": "all",
-      "name": "Tüm Peluşlar"
+      "id": "pelus-oyuncaklar",
+      "name": "Peluş Oyuncaklar"
     },
     {
-      "id": "ayiciklar",
-      "name": "Peluş Ayıcıklar"
-    },
-    {
-      "id": "hayvanlar",
-      "name": "Sevimli Hayvanlar"
-    },
-    {
-      "id": "dev-peluslar",
-      "name": "Dev & Boy Peluşlar"
-    },
-    {
-      "id": "bebek",
-      "name": "Bebek & Uyku Arkadaşı"
-    },
-    {
-      "id": "anahtarlik",
-      "name": "Çanta & Anahtarlık Peluşlar"
+      "id": "tekstil-urunleri",
+      "name": "Tekstil Ürünleri"
     }
   ],
   "products": [
     {
       "id": "prod-1",
       "name": "Karamel Kalpli Dev Peluş Ayı (120 cm)",
-      "category": "dev-peluslar",
+      "category": "pelus-oyuncaklar",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
       "description": "120 cm boyunda ekstra yumuşak peluş kumaş, içi 1. sınıf boncuk elyaf dolgulu dev boy hediye ve vitrin ayısı. Sevimli kırmızı kadife kalbiyle en çok satan modelimiz.",
       "inStock": true,
       "featured": false,
-      "badge": "En Çok Satan",
+      "badge": "",
       "showStock": false,
       "images": [
         "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
@@ -278,14 +272,14 @@
     {
       "id": "prod-2",
       "name": "Pastel Pembe Uzun Kulak Uyku Tavşanı (40 cm)",
-      "category": "bebek",
+      "category": "pelus-oyuncaklar",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?w=800&auto=format&fit=crop&q=80",
       "description": "Bebeklerin hassas cildine özel tüy dökmeyen kadife dokulu peluş, yenidoğan uyku arkadaşı olarak idealdir.",
       "inStock": true,
-      "featured": true,
-      "badge": "Yeni Doğan Favorisi",
+      "featured": false,
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?w=800&auto=format&fit=crop&q=80"
       ]
@@ -293,14 +287,14 @@
     {
       "id": "prod-3",
       "name": "Bambu Seven Tombul Peluş Panda (50 cm)",
-      "category": "hayvanlar",
+      "category": "pelus-oyuncaklar",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=800&auto=format&fit=crop&q=80",
       "description": "Kucağa tam oturan gövde yapısı, nakışlı detayları ve yumuşacık yüzeyiyle sevimli panda dostumuz.",
       "inStock": true,
-      "featured": true,
-      "badge": "Popüler",
+      "featured": false,
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=800&auto=format&fit=crop&q=80"
       ]
@@ -308,14 +302,14 @@
     {
       "id": "prod-4",
       "name": "Nane Yeşili Sevimli Bebek Dino (45 cm)",
-      "category": "hayvanlar",
+      "category": "pelus-oyuncaklar",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&auto=format&fit=crop&q=80",
       "description": "Sırtında yumuşacık peluş pulları bulunan çocukların en sevdiği pastel yeşil dinozor peluşu.",
       "inStock": true,
       "featured": false,
-      "badge": "Trend",
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&auto=format&fit=crop&q=80"
       ]
@@ -323,14 +317,14 @@
     {
       "id": "prod-5",
       "name": "Klasik Vintage Bal Ayıcığı (60 cm)",
-      "category": "ayiciklar",
+      "category": "pelus-oyuncaklar",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80",
       "description": "Ekose fiyonklu, kıvırcık premium peluş kürke sahip nostaljik ve şık teddy bear.",
       "inStock": true,
-      "featured": true,
-      "badge": "Klasik Seri",
+      "featured": false,
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80"
       ]
@@ -338,14 +332,14 @@
     {
       "id": "prod-6",
       "name": "Gökkuşağı Boynuzlu Peluş Unicorn (55 cm)",
-      "category": "hayvanlar",
+      "category": "tekstil-urunleri",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1562040506-a9b32cb51b94?w=800&auto=format&fit=crop&q=80",
       "description": "Yaldızlı boynuz ve pastel rengarenk yele detaylarıyla masalsı bir hediye seçeneği.",
       "inStock": true,
       "featured": false,
-      "badge": "Özel Tasarım",
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1562040506-a9b32cb51b94?w=800&auto=format&fit=crop&q=80"
       ]
@@ -353,14 +347,14 @@
     {
       "id": "prod-7",
       "name": "Mini Çilek Başlıklı Tavşan Anahtarlık (15 cm)",
-      "category": "anahtarlik",
+      "category": "tekstil-urunleri",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1602734846297-9299fc2d4703?w=800&auto=format&fit=crop&q=80",
       "description": "Çanta süsü ve anahtarlık için altın kaplama klipsli, çilek kostümlü mini sevimli tavşan.",
       "inStock": true,
       "featured": false,
-      "badge": "Çok Satan",
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1602734846297-9299fc2d4703?w=800&auto=format&fit=crop&q=80"
       ]
@@ -368,14 +362,14 @@
     {
       "id": "prod-8",
       "name": "Krem Renk Pofuduk Sarılma Ayısı (80 cm)",
-      "category": "ayiciklar",
+      "category": "pelus-oyuncaklar",
       "price": null,
       "wholesaleMin": null,
       "image": "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?w=800&auto=format&fit=crop&q=80",
       "description": "Orta-büyük boy arayanlar için ideal 80 cm ebat, saten boyun kurdelesi ve ipeksi doku.",
       "inStock": true,
       "featured": false,
-      "badge": "Öne Çıkan",
+      "badge": "",
       "images": [
         "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?w=800&auto=format&fit=crop&q=80"
       ]

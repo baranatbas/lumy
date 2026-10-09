@@ -38,7 +38,7 @@ export default function HomePage() {
   const textColor = theme.textColor || '#18181B';
   const mutedTextColor = theme.mutedTextColor || '#71717A';
   const cardBg = theme.cardBg || '#FFFFFF';
-  const processBg = theme.processBg || '#F4F0E8';
+  const processBg = theme.processBg || siteBg;
   const accentColor = theme.accentColor || '#18181B';
   const accentTextColor = theme.accentTextColor || '#FFFFFF';
   const footerBg = theme.footerBg || '#141414';

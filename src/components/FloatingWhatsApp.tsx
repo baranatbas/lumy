@@ -10,6 +10,10 @@ interface FloatingWhatsAppProps {
 }
 
 export default function FloatingWhatsApp({ settings }: FloatingWhatsAppProps) {
+  if (!settings?.showFloatingWhatsapp) {
+    return null;
+  }
+
   const cleanPhone = formatWhatsAppPhone(settings.contact?.whatsapp);
   const whatsappUrl = `https://wa.me/${cleanPhone}?text=Merhaba%20Lumy%20Toys,%20pelu%C5%9F%20oyuncaklar%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.`;
 

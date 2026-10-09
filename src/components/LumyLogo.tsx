@@ -34,21 +34,22 @@ export default function LumyLogo({
   brandName = 'lumy TOYS',
   className = '',
 }: LumyLogoProps) {
-  // If user has uploaded a custom logo from admin (and it is not the old legacy green box)
-  if (logoUrl && !logoUrl.includes('pelus-1789') && !logoUrl.includes('data:image')) {
+  // If custom logo is set in settings/admin
+  if (logoUrl && logoUrl.trim() !== '') {
     return (
-      <div className={`flex items-center gap-2.5 ${className}`}>
+      <div className={`flex items-center select-none group ${className}`}>
         <img
           src={logoUrl}
           alt={brandName}
-          className="h-10 sm:h-12 w-auto max-w-[180px] object-contain"
+          className="h-11 sm:h-13 md:h-14 w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-105"
         />
       </div>
     );
   }
 
   const isDark = variant === 'dark';
-  const logoSrc = isDark ? '/images/lumy_logo_lime.png' : '/images/lumy_logo_dark.png';
+  // Use the high-res colorful original logo as primary default
+  const logoSrc = isDark ? '/images/lumy_logo_lime.png' : '/images/lumy_logo_color.png';
 
   return (
     <div className={`flex items-center select-none group ${className}`}>

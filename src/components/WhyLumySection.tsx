@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { SiteSettings, WhyFeature } from '@/lib/db';
-import { Heart, Star, Leaf, Smile, Sparkles, ShieldCheck } from 'lucide-react';
+import { Heart, Star, Leaf, Smile, Sparkles, ShieldCheck, Truck } from 'lucide-react';
 
 interface WhyLumySectionProps {
   settings: SiteSettings;
@@ -61,6 +61,8 @@ export default function WhyLumySection({ settings }: WhyLumySectionProps) {
         return <Smile style={iconStyle} className={iconClass} strokeWidth={1.8} />;
       case 'shield':
         return <ShieldCheck style={iconStyle} className={iconClass} strokeWidth={1.8} />;
+      case 'truck':
+        return <Truck style={iconStyle} className={iconClass} strokeWidth={1.8} />;
       default:
         return <Sparkles style={iconStyle} className={iconClass} strokeWidth={1.8} />;
     }
@@ -69,8 +71,7 @@ export default function WhyLumySection({ settings }: WhyLumySectionProps) {
   return (
     <section
       id="why-lumy"
-      style={{ backgroundColor: 'var(--site-bg)' }}
-      className="py-20 sm:py-28 border-t border-current/10 relative transition-colors"
+      className="py-20 sm:py-28 bg-white border-t border-stone-200/80 relative transition-colors shadow-2xs"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -120,26 +121,20 @@ export default function WhyLumySection({ settings }: WhyLumySectionProps) {
                 style={{ color: 'var(--text-main)' }}
                 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight"
               >
-                Her dikişte sevgi, her detayda kusursuz güven.
+                {settings.whyTitle || 'Her dikişte sevgi, her detayda kusursuz güven.'}
               </h2>
             </div>
 
             {/* 4 Feature Columns */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 pt-2">
               {features.map((feat) => (
-                <div key={feat.id} className="space-y-2 group">
-                  <div
-                    style={{
-                      backgroundColor: 'var(--card-bg)',
-                      borderColor: 'var(--text-muted)',
-                    }}
-                    className="w-11 h-11 rounded-2xl border border-opacity-25 shadow-xs flex items-center justify-center group-hover:scale-105 transition-transform duration-300"
-                  >
+                <div key={feat.id} className="space-y-2 group p-4 sm:p-5 rounded-2xl bg-stone-50/80 border border-stone-200/70 hover:border-stone-300 transition-all shadow-2xs">
+                  <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                     {renderIcon(feat.icon)}
                   </div>
                   <h3
                     style={{ color: 'var(--text-main)' }}
-                    className="text-sm font-extrabold tracking-tight"
+                    className="text-sm font-extrabold tracking-tight pt-1"
                   >
                     {feat.title}
                   </h3>

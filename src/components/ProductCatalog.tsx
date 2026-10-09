@@ -2,8 +2,7 @@
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Product, Category, SiteSettings } from '@/lib/db';
-import { formatWhatsAppPhone } from '@/lib/whatsapp';
-import { Search, ArrowRight, X, MessageCircle, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import { Search, ArrowRight, X, ChevronLeft, ChevronRight, Eye, ChevronDown } from 'lucide-react';
 
 interface ProductCatalogProps {
   products: Product[];
@@ -11,36 +10,13 @@ interface ProductCatalogProps {
   settings: SiteSettings;
 }
 
-// Default spotlight items matching the mockup if not enough categories/products exist
-const SPOTLIGHT_DEFAULTS = [
-  {
-    title: 'MARKA MASKOTLARI',
-    image: 'https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80',
-    categoryId: 'ayiciklar'
-  },
-  {
-    title: 'PROMOSYON PELUŞLAR',
-    image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=800&auto=format&fit=crop&q=80',
-    categoryId: 'bebek'
-  },
-  {
-    title: 'HEDİYE & ETKİNLİK',
-    image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&auto=format&fit=crop&q=80',
-    categoryId: 'hayvanlar'
-  },
-  {
-    title: 'ÖZEL TASARIMLAR',
-    image: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=800&auto=format&fit=crop&q=80',
-    categoryId: 'dev-peluslar'
-  }
-];
 
 export default function ProductCatalog({ products, categories, settings }: ProductCatalogProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('pelus-oyuncaklar');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showFullCatalog, setShowFullCatalog] = useState<boolean>(false);
   const [activeModalProduct, setActiveModalProduct] = useState<Product | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
+  const [visibleCount, setVisibleCount] = useState<number>(8);
 
   // Hidden scroll & arrow navigation state for categories
   const categoriesRef = useRef<HTMLDivElement>(null);
@@ -70,24 +46,21 @@ export default function ProductCatalog({ products, categories, settings }: Produ
     }
   };
 
-  const cleanPhone = formatWhatsAppPhone(settings.contact?.whatsapp);
-
   const kicker = settings.productsKicker || 'ÜRÜNLERİMİZ';
   const title = settings.productsTitle || 'Bir oyuncaktan çok daha fazlası.';
   const subtitle =
     settings.productsSubtitle ||
     'Yumuşacık, sevimli ve karakter dolu — peluş oyuncaklarımız markalar, etkinlikler ve özel projeler için tasarlandı.';
-  const ctaText = settings.productsCtaText || 'TÜM ÜRÜNLERİ GÖRÜNTÜLE →';
 
   // Filter products intended for homepage
   const visibleProducts = useMemo(() => {
     return products.filter((p) => p.showOnHomepage !== false);
   }, [products]);
 
-  // Active categories with products
+  // Active categories with products (strictly excluding 'all' / Tüm Ürünler)
   const activeCategories = useMemo(() => {
     return categories.filter((cat) => {
-      if (cat.id === 'all') return true;
+      if (cat.id === 'all') return false;
       return visibleProducts.some((p) => p.category === cat.id);
     });
   }, [categories, visibleProducts]);
@@ -96,12 +69,19 @@ export default function ProductCatalog({ products, categories, settings }: Produ
     checkScroll();
     window.addEventListener('resize', checkScroll);
     return () => window.removeEventListener('resize', checkScroll);
-  }, [activeCategories, showFullCatalog]);
+  }, [activeCategories]);
 
-  // Filtered products list (Featured / Vitrin items sorted to the top)
+  // If selectedCategory is 'all', switch to the first real category
+  useEffect(() => {
+    if ((selectedCategory === 'all' || !activeCategories.some(c => c.id === selectedCategory)) && activeCategories.length > 0) {
+      setSelectedCategory(activeCategories[0].id);
+    }
+  }, [selectedCategory, activeCategories]);
+
+  // Filtered products list (Vitrin items sorted to the top)
   const filteredProducts = useMemo(() => {
     const list = visibleProducts.filter((item) => {
-      const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+      const matchesCategory = item.category === selectedCategory;
       const matchesSearch =
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -115,43 +95,54 @@ export default function ProductCatalog({ products, categories, settings }: Produ
     });
   }, [visibleProducts, selectedCategory, searchQuery]);
 
+  // Reset pagination when category or search changes
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [selectedCategory, searchQuery]);
+
+  const displayedProducts = useMemo(() => {
+    return filteredProducts.slice(0, visibleCount);
+  }, [filteredProducts, visibleCount]);
+
   const handleOpenModal = (product: Product) => {
     setActiveModalProduct(product);
     setActiveImageIndex(0);
   };
 
-  const handleWhatsAppOrder = (product: Product) => {
-    const text = `Merhaba Lumy Toys, "${product.name}" peluş modeli hakkında bilgi ve sipariş detaylarını öğrenmek istiyorum.`;
-    const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
-  };
-
-  // Map 4 spotlight cards from categories or defaults
+  // Map 2 primary category showcase cards
   const spotlightCards = useMemo(() => {
-    return SPOTLIGHT_DEFAULTS.map((def, idx) => {
-      const matchingCat = categories[idx + 1] || null;
-      const matchingProduct = visibleProducts.find((p) => p.category === (matchingCat?.id || def.categoryId));
-      return {
-        title: matchingCat ? matchingCat.name.toUpperCase() : def.title,
-        categoryId: matchingCat ? matchingCat.id : def.categoryId,
-        image: matchingProduct?.image || def.image
-      };
-    });
-  }, [categories, visibleProducts]);
+    const cat1Id = settings.spotlight1CategoryId || 'pelus-oyuncaklar';
+    const cat2Id = settings.spotlight2CategoryId || 'tekstil-urunleri';
+    const cat1 = categories.find((c) => c.id === cat1Id);
+    const cat2 = categories.find((c) => c.id === cat2Id);
+
+    return [
+      {
+        title: settings.spotlight1Title || cat1?.name || 'Peluş Oyuncaklar',
+        categoryId: cat1Id,
+        image: settings.spotlight1Image || '/images/category_pelus_bear.png'
+      },
+      {
+        title: settings.spotlight2Title || cat2?.name || 'Tekstil Ürünleri',
+        categoryId: cat2Id,
+        image: settings.spotlight2Image || '/images/category_textil_bunny.png'
+      }
+    ];
+  }, [categories, settings]);
 
   return (
     <section
       id="products"
       style={{ backgroundColor: 'var(--site-bg)' }}
-      className="py-20 sm:py-28 border-t border-current/10 relative transition-colors"
+      className="py-16 sm:py-24 border-t border-stone-300/80 relative transition-colors"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         
-        {/* Top Header Row: Left Narrative + Right 4 Showcase Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        {/* Top Header Row: Left Narrative + Right 2 Showcase Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           
           {/* Left Column: Heading and Description */}
-          <div className="lg:col-span-4 space-y-5 lg:sticky lg:top-32">
+          <div className="lg:col-span-5 space-y-5">
             <span
               style={{ color: 'var(--text-muted)' }}
               className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block"
@@ -172,52 +163,37 @@ export default function ProductCatalog({ products, categories, settings }: Produ
             >
               {subtitle}
             </p>
-
-            <div className="pt-2">
-              <button
-                onClick={() => setShowFullCatalog(!showFullCatalog)}
-                style={{
-                  color: 'var(--text-main)',
-                  borderColor: 'var(--text-main)',
-                }}
-                className="group inline-flex items-center gap-2 text-xs font-bold tracking-[0.15em] uppercase border-b pb-1 transition-all cursor-pointer"
-              >
-                <span>{showFullCatalog ? 'KATALOĞU DARALT' : ctaText.replace('→', '').trim()}</span>
-                <ArrowRight className={`w-3.5 h-3.5 transition-transform ${showFullCatalog ? 'rotate-90' : 'group-hover:translate-x-1'}`} />
-              </button>
-            </div>
           </div>
 
-          {/* Right Column: 4 Minimalist Category / Showcase Cards */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-4">
+          {/* Right Column: 2 Borderless Category Plush Toys Sitting on the Floor */}
+          <div className="lg:col-span-7 flex justify-center lg:justify-end">
+            <div className="grid grid-cols-2 gap-8 sm:gap-12 w-full max-w-lg">
               {spotlightCards.map((card, idx) => (
                 <div
                   key={idx}
                   onClick={() => {
                     setSelectedCategory(card.categoryId);
-                    setShowFullCatalog(true);
+                    const el = document.getElementById('catalog-grid');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  style={{ backgroundColor: 'var(--card-bg)' }}
-                  className="rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-current/10 shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col group"
+                  className="cursor-pointer flex flex-col items-center text-center group select-none"
                 >
-                  {/* Plush Studio Image */}
-                  <div className="w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden bg-current/5 mb-3 relative flex items-center justify-center">
+                  {/* Plush Studio Image sitting naturally on the site ground */}
+                  <div className="w-full aspect-square relative flex items-end justify-center bg-transparent">
                     <img
                       src={card.image}
                       alt={card.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
 
-                  {/* Category Title Link with Arrow */}
-                  <div
+                  {/* Clean Category Title below the toy */}
+                  <span
                     style={{ color: 'var(--text-main)' }}
-                    className="flex items-center justify-between text-[11px] font-bold tracking-wider uppercase group-hover:opacity-75 transition-opacity pt-1"
+                    className="text-xs sm:text-[13px] font-medium tracking-normal text-stone-700 group-hover:text-stone-950 transition-colors pt-2 block"
                   >
-                    <span className="truncate">{card.title}</span>
-                    <ArrowRight className="w-3 h-3 shrink-0 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </div>
+                    {card.title}
+                  </span>
                 </div>
               ))}
             </div>
@@ -225,9 +201,8 @@ export default function ProductCatalog({ products, categories, settings }: Produ
 
         </div>
 
-        {/* Full Interactive Catalog View (Expandable / Searchable) */}
-        {showFullCatalog && (
-          <div className="mt-16 pt-12 border-t border-current/10 space-y-8 animate-fadeIn">
+        {/* Full Interactive Catalog View (Always visible) */}
+        <div id="catalog-grid" className="mt-14 pt-10 border-t border-current/10 space-y-8">
             
             {/* Elegant Minimalist Filter Bar (Hidden Scrollbar + Arrow Navigation) */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-current/10 pb-4">
@@ -314,7 +289,7 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Koleksiyonda ara..."
+                  placeholder={settings.catalogSearchPlaceholder || 'Koleksiyonda ara...'}
                   style={{
                     color: 'var(--text-main)',
                     borderColor: 'var(--text-muted)',
@@ -335,84 +310,76 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                {filteredProducts.map((product) => {
-                  const productImages = product.images && product.images.length > 0 ? product.images : [product.image];
-                  return (
-                    <div
-                      key={product.id}
-                      onClick={() => handleOpenModal(product)}
-                      style={{ backgroundColor: 'var(--card-bg)' }}
-                      className="rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-current/10 shadow-xs hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between"
-                    >
-                      <div className="w-full aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-current/5 relative mb-3">
-                        <img
-                          src={productImages[0] || product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        {(product.badge || product.featured) && (
-                          <span
-                            style={{
-                              backgroundColor: 'var(--accent-bg)',
-                              color: 'var(--accent-text)',
-                            }}
-                            className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs"
+              <div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+                  {displayedProducts.map((product) => {
+                    const productImages = product.images && product.images.length > 0 ? product.images : [product.image];
+                    return (
+                      <div
+                        key={product.id}
+                        onClick={() => handleOpenModal(product)}
+                        className="group cursor-pointer flex flex-col justify-between transition-all"
+                      >
+                        {/* Image container: borderless, transparent, mix-blend-multiply */}
+                        <div className="w-full aspect-square rounded-2xl overflow-hidden mb-3 relative flex items-center justify-center bg-transparent group-hover:scale-[1.03] transition-transform duration-300">
+                          <img
+                            src={productImages[0] || product.image}
+                            alt={product.name}
+                            className="w-full h-full object-contain p-2 mix-blend-multiply"
+                          />
+                          <div className="absolute inset-0 bg-stone-900/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
+                            <span className="bg-white/95 text-stone-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5">
+                              <Eye className="w-3.5 h-3.5" /> İncele
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <h4
+                            style={{ color: 'var(--text-main)' }}
+                            className="text-xs sm:text-sm font-bold line-clamp-1 group-hover:opacity-75 transition-opacity"
                           >
-                            {product.badge || '⭐ Öne Çıkan'}
-                          </span>
-                        )}
-                        <div className="absolute inset-0 bg-stone-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="bg-white/95 text-stone-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5">
-                            <Eye className="w-3.5 h-3.5" /> İncele
-                          </span>
+                            {product.name}
+                          </h4>
+                          <p
+                            style={{ color: 'var(--text-muted)' }}
+                            className="text-[11px] line-clamp-2 font-normal leading-relaxed"
+                          >
+                            {product.description}
+                          </p>
                         </div>
                       </div>
+                    );
+                  })}
+                </div>
 
-                      <div className="space-y-1">
-                        <h4
-                          style={{ color: 'var(--text-main)' }}
-                          className="text-xs sm:text-sm font-bold line-clamp-1 group-hover:opacity-75 transition-opacity"
-                        >
-                          {product.name}
-                        </h4>
-                        <p
-                          style={{ color: 'var(--text-muted)' }}
-                          className="text-[11px] line-clamp-1 font-normal"
-                        >
-                          {product.description}
-                        </p>
-                      </div>
-
-                      <div className="pt-3 mt-2 border-t border-current/10 flex items-center justify-between">
-                        <span
-                          style={{ color: 'var(--text-muted)' }}
-                          className="text-[10px] uppercase tracking-wider font-semibold"
-                        >
-                          {product.inStock === false ? 'Tükendi' : 'Stokta Var'}
-                        </span>
-                        <span
-                          style={{ color: 'var(--text-main)' }}
-                          className="text-[11px] font-bold tracking-wider inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
-                        >
-                          Detay <ArrowRight className="w-3 h-3" />
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+                {/* Load More Button */}
+                {visibleCount < filteredProducts.length && (
+                  <div className="flex justify-center pt-10 sm:pt-12">
+                    <button
+                      onClick={() => setVisibleCount((prev) => prev + 8)}
+                      style={{
+                        backgroundColor: 'var(--card-bg)',
+                        color: 'var(--text-main)',
+                      }}
+                      className="px-7 py-3 rounded-full text-xs font-bold uppercase tracking-[0.15em] border border-stone-300/80 hover:border-stone-900 shadow-xs hover:shadow-md transition-all cursor-pointer inline-flex items-center gap-2 group"
+                    >
+                      <span>{settings.catalogLoadMoreText || 'Daha Fazla Göster'} ({filteredProducts.length - visibleCount} Ürün Kaldı)</span>
+                      <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
           </div>
-        )}
 
       </div>
 
       {/* Product Detail Modal */}
       {activeModalProduct && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6"
           onClick={() => setActiveModalProduct(null)}
         >
           <div
@@ -420,7 +387,7 @@ export default function ProductCatalog({ products, categories, settings }: Produ
               backgroundColor: 'var(--card-bg)',
               color: 'var(--text-main)',
             }}
-            className="rounded-3xl sm:rounded-4xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-black/10 relative overflow-hidden"
+            className="rounded-3xl sm:rounded-4xl max-w-4xl w-full p-6 sm:p-10 shadow-2xl border border-black/10 relative overflow-hidden max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -436,9 +403,9 @@ export default function ProductCatalog({ products, categories, settings }: Produ
               <X className="w-5 h-5" />
             </button>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-              {/* Left Gallery Images */}
-              <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+              {/* Left Gallery Images (Dominant large photo) */}
+              <div className="md:col-span-7 space-y-4">
                 {(() => {
                   const gallery =
                     activeModalProduct.images && activeModalProduct.images.length > 0
@@ -448,11 +415,11 @@ export default function ProductCatalog({ products, categories, settings }: Produ
 
                   return (
                     <>
-                      <div className="relative aspect-square rounded-2xl overflow-hidden bg-current/5 border border-black/10">
+                      <div className="relative aspect-square sm:aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-current/5 border border-black/5 flex items-center justify-center p-4">
                         <img
                           src={currentImage}
                           alt={activeModalProduct.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain mix-blend-multiply"
                         />
                         {gallery.length > 1 && (
                           <div className="absolute inset-y-0 inset-x-2 flex items-center justify-between pointer-events-none">
@@ -465,7 +432,7 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                                 backgroundColor: 'var(--card-bg)',
                                 color: 'var(--text-main)',
                               }}
-                              className="p-1.5 rounded-full shadow-md pointer-events-auto cursor-pointer border border-black/10"
+                              className="p-2 rounded-full shadow-md pointer-events-auto cursor-pointer border border-black/10 hover:scale-105 transition-transform"
                             >
                               <ChevronLeft className="w-4 h-4" />
                             </button>
@@ -478,7 +445,7 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                                 backgroundColor: 'var(--card-bg)',
                                 color: 'var(--text-main)',
                               }}
-                              className="p-1.5 rounded-full shadow-md pointer-events-auto cursor-pointer border border-black/10"
+                              className="p-2 rounded-full shadow-md pointer-events-auto cursor-pointer border border-black/10 hover:scale-105 transition-transform"
                             >
                               <ChevronRight className="w-4 h-4" />
                             </button>
@@ -487,7 +454,7 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                       </div>
 
                       {gallery.length > 1 && (
-                        <div className="flex gap-2 overflow-x-auto pb-1">
+                        <div className="flex gap-2.5 overflow-x-auto pb-1">
                           {gallery.map((img, i) => (
                             <button
                               key={i}
@@ -495,11 +462,11 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                               style={{
                                 borderColor: activeImageIndex === i ? 'var(--text-main)' : 'transparent',
                               }}
-                              className={`w-14 h-14 rounded-xl overflow-hidden border-2 shrink-0 cursor-pointer ${
+                              className={`w-16 h-16 rounded-xl overflow-hidden border-2 shrink-0 cursor-pointer bg-current/5 p-1 ${
                                 activeImageIndex === i ? '' : 'opacity-60 hover:opacity-100'
                               }`}
                             >
-                              <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
+                              <img src={img} alt="thumbnail" className="w-full h-full object-contain mix-blend-multiply" />
                             </button>
                           ))}
                         </div>
@@ -510,22 +477,10 @@ export default function ProductCatalog({ products, categories, settings }: Produ
               </div>
 
               {/* Right Product Info */}
-              <div className="space-y-4">
-                {(activeModalProduct.badge || activeModalProduct.featured) && (
-                  <span
-                    style={{
-                      backgroundColor: 'var(--accent-bg)',
-                      color: 'var(--accent-text)',
-                    }}
-                    className="inline-block text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full shadow-xs"
-                  >
-                    {activeModalProduct.badge || '⭐ Öne Çıkan'}
-                  </span>
-                )}
-
+              <div className="md:col-span-5 space-y-4">
                 <h3
                   style={{ color: 'var(--text-main)' }}
-                  className="text-xl sm:text-2xl font-black leading-snug"
+                  className="text-2xl sm:text-3xl font-bold tracking-tight leading-snug"
                 >
                   {activeModalProduct.name}
                 </h3>
@@ -536,23 +491,6 @@ export default function ProductCatalog({ products, categories, settings }: Produ
                 >
                   {activeModalProduct.description}
                 </p>
-
-                <div
-                  style={{ borderColor: 'var(--text-muted)' }}
-                  className="pt-4 border-t border-opacity-20 space-y-3"
-                >
-                  <button
-                    onClick={() => handleWhatsAppOrder(activeModalProduct)}
-                    style={{
-                      backgroundColor: 'var(--accent-bg)',
-                      color: 'var(--accent-text)',
-                    }}
-                    className="w-full inline-flex items-center justify-center gap-2.5 font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer opacity-95 hover:opacity-100"
-                  >
-                    <MessageCircle className="w-4 h-4 text-emerald-400" />
-                    <span>WhatsApp ile Bilgi Al</span>
-                  </button>
-                </div>
               </div>
 
             </div>

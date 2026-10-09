@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { SiteSettings } from '@/lib/db';
 import LumyLogo, { isDarkColor } from './LumyLogo';
-import { Mail, Phone, MapPin, Instagram, Linkedin, Send, CheckCircle2, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Linkedin, Facebook, Send, CheckCircle2, Lock, ArrowRight } from 'lucide-react';
 
 interface FooterProps {
   settings: SiteSettings;
@@ -22,11 +22,19 @@ export default function Footer({ settings }: FooterProps) {
 
   const isDarkFooter = isDarkColor(settings.theme?.footerBg || '#141414');
 
-  const contactInfo = settings.contact || {
-    email: 'info@lumytoys.com',
-    phone: '+90 530 123 45 67',
-    address: 'İstanbul, Türkiye',
-    instagram: 'https://instagram.com/lumytoys'
+  const contactInfo = {
+    email: settings.contact?.email || 'info@lumytoys.com',
+    phone: settings.contact?.phone || settings.contact?.whatsapp || '+90 530 123 45 67',
+    address: settings.contact?.address || 'İstanbul, Türkiye',
+    instagram: settings.contact?.instagram || 'https://instagram.com/lumytoys',
+    facebook: settings.contact?.facebook,
+    linkedin: settings.contact?.linkedin || 'https://linkedin.com/company/lumytoys',
+    showPhone: settings.contact?.showPhone !== false,
+    showEmail: settings.contact?.showEmail !== false,
+    showAddress: settings.contact?.showAddress !== false,
+    showInstagram: settings.contact?.showInstagram !== false,
+    showFacebook: settings.contact?.showFacebook !== false,
+    showLinkedin: settings.contact?.showLinkedin !== false,
   };
 
   const tagline = settings.footerTagline || 'Özel bir şeyler üretelim. Ekibimizle hemen iletişime geçin.';
@@ -77,15 +85,15 @@ export default function Footer({ settings }: FooterProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         
-        {/* Main 3-Column Layout */}
+        {/* Main 2-Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-b border-current/15">
           
           {/* Left Column: Brand & Interactive Contact Form */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="lg:col-span-7 space-y-6">
             <Link href="/" className="inline-block group">
               <LumyLogo
                 variant={isDarkFooter ? 'dark' : 'light'}
-                logoUrl={settings.logoUrl}
+                logoUrl={settings.footerLogoUrl || settings.logoUrl}
                 brandName={settings.brandName || 'lumy TOYS'}
               />
             </Link>
@@ -164,8 +172,8 @@ export default function Footer({ settings }: FooterProps) {
             </div>
           </div>
 
-          {/* Center Column: Direct Contact Info & Socials */}
-          <div className="lg:col-span-3 space-y-6">
+          {/* Right Column: Direct Contact Info & Socials */}
+          <div className="lg:col-span-5 space-y-6 lg:pl-10">
             <span
               style={{ color: 'var(--footer-text)', opacity: 0.65 }}
               className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block"
@@ -174,7 +182,7 @@ export default function Footer({ settings }: FooterProps) {
             </span>
 
             <div className="space-y-4 text-xs font-medium" style={{ color: 'var(--footer-text)' }}>
-              {contactInfo.email && (
+              {contactInfo.showEmail && contactInfo.email && (
                 <div className="flex items-center gap-3 group">
                   <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
                     <Mail className="w-4 h-4" />
@@ -185,7 +193,7 @@ export default function Footer({ settings }: FooterProps) {
                 </div>
               )}
 
-              {contactInfo.phone && (
+              {contactInfo.showPhone && contactInfo.phone && (
                 <div className="flex items-center gap-3 group">
                   <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
                     <Phone className="w-4 h-4" />
@@ -196,7 +204,7 @@ export default function Footer({ settings }: FooterProps) {
                 </div>
               )}
 
-              {contactInfo.address && (
+              {contactInfo.showAddress && contactInfo.address && (
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0 opacity-80 mt-0.5">
                     <MapPin className="w-4 h-4" />
@@ -208,9 +216,9 @@ export default function Footer({ settings }: FooterProps) {
               )}
             </div>
 
-            {/* Social Icons */}
+            {/* Social Icons (Instagram -> Facebook -> LinkedIn) */}
             <div className="pt-2 flex items-center gap-3">
-              {contactInfo.instagram && (
+              {contactInfo.showInstagram && contactInfo.instagram && (
                 <a
                   href={contactInfo.instagram}
                   target="_blank"
@@ -222,7 +230,7 @@ export default function Footer({ settings }: FooterProps) {
                   <Instagram className="w-4 h-4" />
                 </a>
               )}
-              {contactInfo.facebook && (
+              {contactInfo.showFacebook && contactInfo.facebook && (
                 <a
                   href={contactInfo.facebook}
                   target="_blank"
@@ -231,79 +239,23 @@ export default function Footer({ settings }: FooterProps) {
                   style={{ color: 'var(--footer-text)' }}
                   title="Facebook"
                 >
+                  <Facebook className="w-4 h-4" />
+                </a>
+              )}
+              {contactInfo.showLinkedin && contactInfo.linkedin && (
+                <a
+                  href={contactInfo.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  style={{ color: 'var(--footer-text)' }}
+                  title="LinkedIn"
+                >
                   <Linkedin className="w-4 h-4" />
                 </a>
               )}
             </div>
           </div>
-
-          {/* Right Column: Peeking Fox Mascot Graphic */}
-          <div className="lg:col-span-3 relative flex items-end justify-center lg:justify-end">
-            <div className="w-48 sm:w-56 lg:w-64 select-none relative">
-              {/* Cute SVG Plush Fox Face peeking up */}
-              <svg
-                viewBox="0 0 240 220"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-auto drop-shadow-2xl"
-              >
-                {/* Left Ear */}
-                <path
-                  d="M40 140L15 45C13 38 22 34 27 40L75 95C60 110 48 125 40 140Z"
-                  fill="#D95D1E"
-                />
-                <path
-                  d="M38 120L24 58C22 53 28 50 32 54L65 92C55 102 45 111 38 120Z"
-                  fill="#FFF7ED"
-                />
-
-                {/* Right Ear */}
-                <path
-                  d="M200 140L225 45C227 38 218 34 213 40L165 95C180 110 192 125 200 140Z"
-                  fill="#D95D1E"
-                />
-                <path
-                  d="M202 120L216 58C218 53 212 50 208 54L175 92C185 102 195 111 202 120Z"
-                  fill="#FFF7ED"
-                />
-
-                {/* Main Fox Head Shape */}
-                <path
-                  d="M35 150C35 100 70 85 120 85C170 85 205 100 205 150C205 200 170 220 120 220C70 220 35 200 35 150Z"
-                  fill="#E66A23"
-                />
-
-                {/* White Cheek Tufts / Fur */}
-                <path
-                  d="M35 155C35 190 70 215 120 215C170 215 205 190 205 155C195 155 180 140 160 145C140 150 130 165 120 165C110 165 100 150 80 145C60 140 45 155 35 155Z"
-                  fill="#FFFBF5"
-                />
-
-                {/* Left Eye */}
-                <ellipse cx="85" cy="140" rx="6" ry="8" fill="#1C1917" />
-                <circle cx="83" cy="137" r="2.5" fill="#FFFFFF" />
-
-                {/* Right Eye */}
-                <ellipse cx="155" cy="140" rx="6" ry="8" fill="#1C1917" />
-                <circle cx="153" cy="137" r="2.5" fill="#FFFFFF" />
-
-                {/* Cute Black Snout / Nose */}
-                <path
-                  d="M110 170C110 165 130 165 130 170C130 176 120 182 120 182C120 182 110 176 110 170Z"
-                  fill="#1C1917"
-                />
-
-                {/* Gentle Smile */}
-                <path
-                  d="M114 184C117 187 120 188 120 188C120 188 123 187 126 184"
-                  stroke="#1C1917"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-          </div>
-
         </div>
 
         {/* Bottom Bar: Copyright & Admin Link */}
