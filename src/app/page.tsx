@@ -1,5 +1,7 @@
-import React from 'react';
-import { getSettings, getProducts, getCategories } from '@/lib/db';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import defaultDbData from '../../data/db.json';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import ProcessSection from '@/components/ProcessSection';
@@ -7,16 +9,29 @@ import ProductCatalog from '@/components/ProductCatalog';
 import WhyLumySection from '@/components/WhyLumySection';
 import Footer from '@/components/Footer';
 
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export default function HomePage() {
+  const [settings, setSettings] = useState<any>(defaultDbData.settings);
+  const [products, setProducts] = useState<any[]>(defaultDbData.products);
+  const [categories, setCategories] = useState<any[]>(defaultDbData.categories);
 
-export default async function HomePage() {
-  const [settings, products, categories] = await Promise.all([
-    getSettings(),
-    getProducts(),
-    getCategories(),
-  ]);
+  useEffect(() => {
+    // Canlı veritabanındaki güncel verileri çek
+    Promise.all([
+      fetch('/api/settings').then(r => r.json()).catch(() => null),
+      fetch('/api/products').then(r => r.json()).catch(() => null),
+      fetch('/api/categories').then(r => r.json()).catch(() => null),
+    ]).then(([settRes, prodRes, catRes]) => {
+      if (settRes?.success && settRes.data) {
+        setSettings((prev: any) => (JSON.stringify(prev) === JSON.stringify(settRes.data) ? prev : settRes.data));
+      }
+      if (prodRes?.success && prodRes.data) {
+        setProducts((prev: any[]) => (JSON.stringify(prev) === JSON.stringify(prodRes.data) ? prev : prodRes.data));
+      }
+      if (catRes?.success && catRes.data) {
+        setCategories((prev: any[]) => (JSON.stringify(prev) === JSON.stringify(catRes.data) ? prev : catRes.data));
+      }
+    });
+  }, []);
 
   // Find featured hero product if configured
   const heroProduct = settings?.heroProductId
