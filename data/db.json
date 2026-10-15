@@ -1,8 +1,8 @@
 {
   "settings": {
     "theme": {
-      "siteBg": "#EDE9E0",
-      "textColor": "#18181B",
+      "siteBg": "#FAF8F5",
+      "textColor": "#000000",
       "mutedTextColor": "#71717A",
       "cardBg": "#FFFFFF",
       "processBg": "#F4F0E8",
@@ -13,18 +13,18 @@
     },
     "brandName": "Lumy Toys",
     "slogan": "En Yumuşak Sarılmalar, En Tatlı Gülümsemeler",
-    "badgeText": "🧸 Türkiye'nin En Sevilen Peluş Dünyası",
-    "badgeSubtext": "1. Sınıf EN-71 Sertifikalı Antialerjik Dolgu",
+    "badgeText": "🧸 Kampanyalar, etkinlikler ve özel projeler için markalara özel peluş oyuncak üretimi.",
+    "badgeSubtext": "",
     "navCatalog": "Ürün Kataloğu",
     "navAbout": "Hakkımızda",
     "navContact": "İletişim",
     "navWhatsappBtn": "WhatsApp Danışma",
-    "heroKicker": "ÖZEL TASARIM & MARKA PELUŞLARI",
-    "heroTitle": "Fikirlerinizi sarılası peluşlara dönüştürüyoruz.",
-    "heroSubtitle": "Yaratıcı tasarım, 1. sınıf antialerjik kumaşlar ve güvenilir üretim sürecimizle hayallerinizi gerçeğe dönüştürüyoruz.",
-    "heroCtaText": "BİRLİKTE ÜRETELİM",
+    "heroKicker": "N/A",
+    "heroTitle": "Markanız için özel tasarım peluş oyuncaklar",
+    "heroSubtitle": "Lumy Toys olarak 1. sınıf antialerjik kumaşlar ve CE güvenlik sertifikalı dolgularla tüm peluş severlere en sevimli peluş oyuncakları sunuyoruz.",
+    "heroCtaText": "N/A",
     "heroCtaLink": "#contact",
-    "heroImageUrl": "/images/hero_hedgehog_banner.jpg",
+    "heroImageUrl": "/images/hero_live.jpg",
     "heroProductId": "",
     "catalogBadgeIcon": "✨",
     "catalogBadge": "Peluş Koleksiyonumuz",
@@ -106,20 +106,20 @@
     ],
     "stats": [
       {
-        "label": "Mutlu Müşteri",
-        "value": "50.000+"
+        "label": "",
+        "value": ""
       },
       {
-        "label": "Toptan Bayi & Mağaza",
-        "value": "250+"
+        "label": "",
+        "value": ""
       },
       {
-        "label": "Farklı Peluş Modeli",
-        "value": "120+"
+        "label": "",
+        "value": ""
       },
       {
-        "label": "Güvenlik Sertifikası",
-        "value": "%100 CE"
+        "label": "",
+        "value": ""
       }
     ],
     "contactBadgeIcon": "✉️",
@@ -134,15 +134,14 @@
     "contactEmailTitle": "E-Posta Adresleri",
     "contactAddressTitle": "Fabrika & Showroom Adresi",
     "contact": {
-      "phone": "+90 (212) 555 89 42",
-      "whatsapp": "+90 530 123 45 67",
+      "phone": "+90 212 518 40 60 ",
+      "whatsapp": "+90 535 602 51 23",
       "email": "info@lumytoys.com",
       "wholesaleEmail": "toptan@lumytoys.com",
-      "address": "İkitelli OSB Mah. Oyuncakçılar Sanayi Sitesi A Blok No: 24, Başakşehir / İstanbul",
+      "address": "Oruç Reis Mah.Giyimkent 1.Sk. Giyimkent Sitesi B8 No:32A  Esenler/ İstanbul",
       "workingHours": "Pazartesi - Cumartesi: 09:00 - 18:30",
       "instagram": "https://instagram.com/lumytoys",
-      "facebook": "https://facebook.com/lumytoys",
-      "showInstagram": true
+      "facebook": "https://facebook.com/lumytoys"
     },
     "footerDescription": "Lumy Toys olarak 1. sınıf antialerjik kumaşlar ve CE güvenlik standartlarında sevimli peluş oyuncaklar tasarlıyoruz.",
     "footerSecurityBadgeIcon": "🛡️",
@@ -151,24 +150,21 @@
     "footerCol3Title": "İletişim Bilgileri",
     "footerCol4Title": "Yönetim & Güvenlik",
     "footerCopyright": "Tüm Hakları Saklıdır.",
-    "footerTagline": "Özel bir şeyler üretelim. Ekibimizle hemen iletişime geçin.",
+    "footerTagline": "Peluş ve çocuk sevgisiyle üretilmiştir",
     "floatingWhatsappText": "🧸 Bize WhatsApp'tan Yazın!",
-    "showFloatingWhatsapp": false,
     "emailNotification": {
       "enabled": true,
-      "recipientEmail": "samet.candr2001@gmail.com",
-      "smtpHost": "",
+      "recipientEmail": "info@lumytoys.com",
+      "smtpHost": "mail.lumytoys.com",
       "smtpPort": 0,
-      "smtpUser": "",
+      "smtpUser": "info@lumytoys.com",
       "smtpPass": ""
     },
-    "logoUrl": "/images/site_logo.png",
-    "footerLogoUrl": "",
-    "footerMascotUrl": "",
+    "logoUrl": "/images/site_logo.svg",
     "processKicker": "ÜRETİM SÜRECİMİZ",
     "processTitle": "Çizimden gülümsemeye.",
     "processSubtitle": "Fikirlerinizi yaratıcı tasarım, yüksek kaliteli malzemeler ve güvenilir bir üretim süreciyle hayata geçiriyoruz.",
-    "processCtaText": "SÜRECİMİZİ KEŞFEDİN →",
+    "processCtaText": "",
     "processSteps": [
       {
         "id": "step-1",
@@ -203,16 +199,9 @@
     "productsTitle": "Bir oyuncaktan çok daha fazlası.",
     "productsSubtitle": "Yumuşacık, sevimli ve karakter dolu — peluş oyuncaklarımız markalar, etkinlikler ve özel projeler için tasarlandı.",
     "productsCtaText": "TÜM ÜRÜNLERİ GÖRÜNTÜLE →",
-    "spotlight1Title": "Peluş Oyuncaklar",
-    "spotlight1Image": "/images/category_pelus_showcase.png",
-    "spotlight1CategoryId": "pelus-oyuncaklar",
-    "spotlight2Title": "Tekstil Ürünleri",
-    "spotlight2Image": "/images/category_textil_showcase.png",
-    "spotlight2CategoryId": "tekstil-urunleri",
     "whyKicker": "NEDEN LUMY TOYS?",
-    "whyTitle": "Her dikişte sevgi, her detayda kusursuz güven.",
     "whyNote": "Gerçek ortaklıklar. Kalıcı anılar. ♡",
-    "whyImageUrl": "/images/why_hedgehog.jpg",
+    "whyImageUrl": "/images/why_live.png",
     "whyFeatures": [
       {
         "id": "wf-1",
@@ -240,216 +229,149 @@
       }
     ],
     "footerContactTitle": "BİZE ULAŞIN",
-    "heroMobileImageUrl": "/images/hero_mobile.png",
-    "heroMobileCropX": 54,
-    "heroMobileCropZoom": 1,
-    "heroMobileOverlayOpacity": 0
+    "heroBadgeIcon": "🧸",
+    "heroWholesaleTitle": "Özenle Tasarlanmış Peluş Koleksiyonu",
+    "heroWholesaleText": "",
+    "heroWholesaleIcon": "🧸",
+    "heroCatalogBtnText": "Peluşları Keşfet",
+    "heroWholesaleBtnText": "Bize Ulaşın",
+    "heroTrust1Icon": "🛡️",
+    "heroTrust1Text": "Markanıza Özel Tasarım",
+    "heroTrust2Icon": "✨",
+    "heroTrust2Text": "Yüksek Kalite Üretim",
+    "heroTrust3Icon": "📦",
+    "heroTrust3Text": "Hzılı & Güvenli Teslimat",
+    "heroImgBadge1": "",
+    "heroImgBadge2": "",
+    "heroMiniBadge1Icon": "✨",
+    "heroMiniBadge1Title": "Güven Standartı",
+    "heroMiniBadge1Text": "",
+    "heroMiniBadge2Icon": "🏆",
+    "heroMiniBadge2Title": "",
+    "heroMiniBadge2Text": ""
   },
   "categories": [
     {
-      "id": "pelus-oyuncaklar",
-      "name": "Peluş Oyuncaklar"
+      "id": "all",
+      "name": "Tüm Peluşlar"
     },
     {
-      "id": "tekstil-urunleri",
-      "name": "Tekstil Ürünleri"
+      "id": "ayiciklar",
+      "name": "Peluş Ayıcıklar"
+    },
+    {
+      "id": "hayvanlar",
+      "name": "Sevimli Hayvanlar"
     }
   ],
   "products": [
     {
-      "name": "sdfsdfsdsdgsdhfd",
-      "category": "pelus-oyuncaklar",
-      "price": null,
-      "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
-      "images": [],
-      "description": "",
-      "inStock": true,
-      "showStock": false,
-      "featured": false,
-      "showOnHomepage": true,
-      "badge": "",
-      "id": "prod-1791558425443"
-    },
-    {
-      "name": "sdfsdfsdfsdfd",
-      "category": "pelus-oyuncaklar",
-      "price": null,
-      "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
-      "images": [],
-      "description": "",
-      "inStock": true,
-      "showStock": false,
-      "featured": false,
-      "showOnHomepage": true,
-      "badge": "",
-      "id": "prod-1791558422266"
-    },
-    {
-      "name": "dfgsdfsdf",
-      "category": "pelus-oyuncaklar",
-      "price": null,
-      "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
-      "images": [],
-      "description": "",
-      "inStock": true,
-      "showStock": false,
-      "featured": false,
-      "showOnHomepage": true,
-      "badge": "",
-      "id": "prod-1791558419745"
-    },
-    {
-      "id": "prod-1",
-      "name": "Karamel Kalpli Dev Peluş Ayı (120 cm)",
-      "category": "pelus-oyuncaklar",
-      "price": null,
-      "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
-      "description": "120 cm boyunda ekstra yumuşak peluş kumaş, içi 1. sınıf boncuk elyaf dolgulu dev boy hediye ve vitrin ayısı. Sevimli kırmızı kadife kalbiyle en çok satan modelimiz.",
-      "inStock": true,
-      "featured": true,
-      "badge": "",
-      "showStock": false,
-      "images": [
-        "https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=800&auto=format&fit=crop&q=80",
-        "/uploads/pelus-1789736464957.png"
-      ]
-    },
-    {
       "id": "prod-2",
-      "name": "Pastel Pembe Uzun Kulak Uyku Tavşanı (40 cm)",
-      "category": "pelus-oyuncaklar",
+      "name": "Aslan Oyuncak",
+      "category": "ayiciklar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?w=800&auto=format&fit=crop&q=80",
-      "description": "Bebeklerin hassas cildine özel tüy dökmeyen kadife dokulu peluş, yenidoğan uyku arkadaşı olarak idealdir.",
+      "image": "/images/products/prod-2-cover.png",
+      "description": "Bebeklerin hassas cildine özel tüy dökmeyen kadife dokulu peluş malzemeden imal ediyoruz.",
       "inStock": true,
       "featured": true,
-      "badge": "",
+      "badge": "Popüler",
       "images": [
-        "https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-2-gallery-1.png",
+        "/images/products/prod-2-gallery-2.png",
+        "/images/products/prod-2-gallery-3.png"
       ]
     },
     {
       "id": "prod-3",
-      "name": "Bambu Seven Tombul Peluş Panda (50 cm)",
-      "category": "pelus-oyuncaklar",
+      "name": "Bambu Seven Tombul Peluş Panda ",
+      "category": "hayvanlar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=800&auto=format&fit=crop&q=80",
-      "description": "Kucağa tam oturan gövde yapısı, nakışlı detayları ve yumuşacık yüzeyiyle sevimli panda dostumuz.",
+      "image": "/images/products/prod-3-cover.jpg",
+      "description": "",
       "inStock": true,
       "featured": true,
-      "badge": "",
+      "badge": "Popüler",
       "images": [
-        "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-3-gallery-1.jpg"
       ]
     },
     {
       "id": "prod-4",
-      "name": "Nane Yeşili Sevimli Bebek Dino (45 cm)",
-      "category": "pelus-oyuncaklar",
+      "name": "Elma Ve Portakal",
+      "category": "hayvanlar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&auto=format&fit=crop&q=80",
+      "image": "/images/products/prod-4-cover.jpg",
       "description": "Sırtında yumuşacık peluş pulları bulunan çocukların en sevdiği pastel yeşil dinozor peluşu.",
       "inStock": true,
-      "featured": true,
-      "badge": "",
+      "featured": false,
+      "badge": "Trend",
       "images": [
-        "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-4-gallery-1.jpg"
       ]
     },
     {
       "id": "prod-5",
-      "name": "Klasik Vintage Bal Ayıcığı (60 cm)",
-      "category": "pelus-oyuncaklar",
+      "name": "Şık Köpekçik",
+      "category": "hayvanlar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80",
+      "image": "/images/products/prod-5-cover.jpg",
       "description": "Ekose fiyonklu, kıvırcık premium peluş kürke sahip nostaljik ve şık teddy bear.",
       "inStock": true,
-      "featured": false,
-      "badge": "",
+      "featured": true,
+      "badge": "Klasik Seri",
       "images": [
-        "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-5-gallery-1.jpg"
       ]
     },
     {
       "id": "prod-6",
-      "name": "Gökkuşağı Boynuzlu Peluş Unicorn (55 cm)",
-      "category": "tekstil-urunleri",
+      "name": "Penguen",
+      "category": "hayvanlar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1562040506-a9b32cb51b94?w=800&auto=format&fit=crop&q=80",
+      "image": "/images/products/prod-6-cover.jpg",
       "description": "Yaldızlı boynuz ve pastel rengarenk yele detaylarıyla masalsı bir hediye seçeneği.",
       "inStock": true,
       "featured": false,
-      "badge": "",
+      "badge": "Özel Tasarım",
       "images": [
-        "https://images.unsplash.com/photo-1562040506-a9b32cb51b94?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-6-gallery-1.jpg"
       ]
     },
     {
       "id": "prod-7",
-      "name": "Mini Çilek Başlıklı Tavşan Anahtarlık (15 cm)",
-      "category": "tekstil-urunleri",
+      "name": "Özel Desenli Ayıcık ",
+      "category": "ayiciklar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1602734846297-9299fc2d4703?w=800&auto=format&fit=crop&q=80",
+      "image": "/images/products/prod-7-cover.jpg",
       "description": "Çanta süsü ve anahtarlık için altın kaplama klipsli, çilek kostümlü mini sevimli tavşan.",
       "inStock": true,
       "featured": false,
-      "badge": "",
+      "badge": "Çok Satan",
       "images": [
-        "https://images.unsplash.com/photo-1602734846297-9299fc2d4703?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-7-gallery-1.jpg"
       ]
     },
     {
       "id": "prod-8",
-      "name": "Krem Renk Pofuduk Sarılma Ayısı (80 cm)",
-      "category": "pelus-oyuncaklar",
+      "name": "Kutup Ayısı",
+      "category": "ayiciklar",
       "price": null,
       "wholesaleMin": null,
-      "image": "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?w=800&auto=format&fit=crop&q=80",
+      "image": "/images/products/prod-8-cover.jpg",
       "description": "Orta-büyük boy arayanlar için ideal 80 cm ebat, saten boyun kurdelesi ve ipeksi doku.",
       "inStock": true,
       "featured": false,
-      "badge": "",
+      "badge": "Öne Çıkan",
       "images": [
-        "https://images.unsplash.com/photo-1558877385-81a1c7e67d72?w=800&auto=format&fit=crop&q=80"
+        "/images/products/prod-8-gallery-1.jpg"
       ]
     }
   ],
-  "messages": [
-    {
-      "id": "msg-1",
-      "name": "Ahmet Yılmaz",
-      "company": "Neşeli Çocuk Oyuncakçılık",
-      "email": "ahmet@neselioyuncak.com",
-      "phone": "0532 111 22 33",
-      "type": "customer",
-      "productInterest": "Dev Peluş Ayıcıklar & Tavşan Serisi",
-      "estimatedQty": "150 Adet",
-      "message": "Merhaba, Bursa'daki 2 şubemiz için özel peluş ayı ve tavşan serisi koleksiyonunuz hakkında bilgi rica ediyoruz.",
-      "date": "2026-09-16 14:30",
-      "status": "unread"
-    },
-    {
-      "id": "msg-2",
-      "name": "Zeynep Kaya",
-      "company": "",
-      "email": "zeynep.kaya@gmail.com",
-      "phone": "0544 999 88 77",
-      "type": "customer",
-      "productInterest": "120 cm Dev Ayı",
-      "estimatedQty": "",
-      "message": "Doğum günü hediyesi olarak yarın kargoya verilip verilemeyeceğini öğrenmek istemiştim.",
-      "date": "2026-09-17 11:15",
-      "status": "read"
-    }
-  ]
+  "messages": []
 }
