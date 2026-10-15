@@ -34,29 +34,21 @@ export default function LumyLogo({
   brandName = 'lumy TOYS',
   className = '',
 }: LumyLogoProps) {
-  // If custom logo is set in settings/admin
-  if (logoUrl && logoUrl.trim() !== '') {
-    return (
-      <div className={`flex items-center select-none group ${className}`}>
-        <img
-          src={logoUrl}
-          alt={brandName}
-          className="h-11 sm:h-13 md:h-14 w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-    );
-  }
-
+  const [hasError, setHasError] = React.useState(false);
   const isDark = variant === 'dark';
   // Use the high-res colorful original logo as primary default
-  const logoSrc = isDark ? '/images/lumy_logo_lime.png' : '/images/lumy_logo_color.png';
+  const defaultLogoSrc = isDark ? '/images/lumy_logo_lime.png' : '/images/lumy_logo_color.png';
+
+  // If custom logo is set in settings/admin and hasn't errored
+  const activeLogoSrc = (!hasError && logoUrl && logoUrl.trim() !== '') ? logoUrl : defaultLogoSrc;
 
   return (
     <div className={`flex items-center select-none group ${className}`}>
       <img
-        src={logoSrc}
+        src={activeLogoSrc}
         alt={brandName}
-        className="h-11 sm:h-13 md:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+        onError={() => setHasError(true)}
+        className="h-11 sm:h-13 md:h-14 w-auto max-w-[200px] object-contain transition-transform duration-300 group-hover:scale-105"
       />
     </div>
   );
