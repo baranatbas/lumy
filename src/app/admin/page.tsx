@@ -238,14 +238,68 @@ export default function AdminDashboardPage() {
     });
   };
 
+  // Automatic client-side image compressor: converts large photos to WebP (~40-70 KB)
+  const compressClientImage = async (file: File, maxWidth = 1000, quality = 0.8): Promise<File> => {
+    if (file.type === 'image/svg+xml') {
+      return file;
+    }
+    return new Promise((resolve) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => resolve(file);
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(file);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file);
+                return;
+              }
+              const webpFile = new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), {
+                type: 'image/webp',
+                lastModified: Date.now(),
+              });
+              resolve(webpFile);
+            },
+            'image/webp',
+            quality
+          );
+        } catch {
+          resolve(file);
+        }
+      };
+      img.onerror = () => resolve(file);
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleImageUploadSlot = async (slotIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadingImage(true);
     try {
+      const compressed = await compressClientImage(file, 900, 0.8);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', compressed);
 
       const res = await fetch('/api/upload', {
         method: 'POST',
@@ -263,7 +317,7 @@ export default function AdminDashboardPage() {
             image: currentImages[0] || data.url
           };
         });
-        showStatus('success', `${slotIndex + 1}. ürün görseli yüklendi!`);
+        showStatus('success', `${slotIndex + 1}. ürün görseli optimize edilerek yüklendi!`);
       } else {
         showStatus('error', data.error || 'Görsel yüklenemedi');
       }
@@ -280,8 +334,9 @@ export default function AdminDashboardPage() {
 
     setUploadingLogo(true);
     try {
+      const compressed = await compressClientImage(file, 600, 0.9);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', compressed);
 
       const res = await fetch('/api/upload', {
         method: 'POST',
@@ -305,8 +360,9 @@ export default function AdminDashboardPage() {
     if (!file || !settings) return;
     setUploadingSectionImg(key);
     try {
+      const compressed = await compressClientImage(file, 1200, 0.8);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', compressed);
 
       const res = await fetch('/api/upload', {
         method: 'POST',
