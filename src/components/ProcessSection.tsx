@@ -39,7 +39,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
 ];
 
 export default function ProcessSection({ settings }: ProcessSectionProps) {
-  const kicker = settings.processKicker || 'ÜRETİM SÜRECİMİZ';
+  const kicker = settings.processKicker !== undefined ? settings.processKicker : 'ÜRETİM SÜRECİMİZ';
   const title = settings.processTitle || 'Çizimden gülümsemeye.';
   const description =
     settings.processSubtitle ||
@@ -58,12 +58,14 @@ export default function ProcessSection({ settings }: ProcessSectionProps) {
           
           {/* Left Column: Heading and Description */}
           <div className="lg:col-span-4 space-y-5 lg:sticky lg:top-32">
-            <span
-              style={{ color: 'var(--text-muted)' }}
-              className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block"
-            >
-              {kicker}
-            </span>
+            {kicker && kicker.trim() !== '' && kicker.trim().toUpperCase() !== 'N/A' && (
+              <span
+                style={{ color: 'var(--text-muted)' }}
+                className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block"
+              >
+                {kicker}
+              </span>
+            )}
 
             <h2
               style={{ color: 'var(--text-main)' }}

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getProducts, createProduct } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export const runtime = 'edge';
 
@@ -19,7 +20,11 @@ export async function GET(request: Request) {
       products = products.filter(p => p.featured);
     }
 
-    return NextResponse.json({ success: true, data: products });
+    return NextResponse.json({ success: true, data: products }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
+      }
+    });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
@@ -52,6 +57,10 @@ export async function POST(request: Request) {
       showOnHomepage: body.showOnHomepage !== undefined ? Boolean(body.showOnHomepage) : true,
       badge: body.badge || ''
     });
+
+    try {
+      revalidatePath('/', 'page');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, data: newProduct }, { status: 201 });
   } catch (error: any) {

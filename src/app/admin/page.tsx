@@ -657,7 +657,7 @@ export default function AdminDashboardPage() {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
             <img
-              src={settings?.logoUrl && settings.logoUrl.trim() !== '' ? settings.logoUrl : '/images/lumy_logo_color.png'}
+              src={settings?.logoUrl && settings.logoUrl.trim() !== '' ? settings.logoUrl : '/images/site_logo.svg'}
               alt={settings?.brandName || 'Lumy Toys'}
               className="h-9 sm:h-12 w-auto max-w-[120px] sm:max-w-[160px] object-contain shrink-0"
             />
@@ -1133,7 +1133,7 @@ export default function AdminDashboardPage() {
                         />
                       ) : (
                         <img
-                          src="/images/lumy_logo_color.png"
+                          src="/images/site_logo.svg"
                           alt="Lumy Toys Orijinal Logo"
                           className="max-h-full max-w-full object-contain"
                         />
@@ -1331,6 +1331,18 @@ export default function AdminDashboardPage() {
                               placeholder="Veya Görsel URL Yapıştırın (/images/hero_hedgehog_banner.jpg veya https://...)"
                               className="flex-1 w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs"
                             />
+
+                            {settings.heroImageUrl && (
+                              <button
+                                type="button"
+                                onClick={() => setSettings({ ...settings, heroImageUrl: '' })}
+                                className="text-red-500 hover:text-red-700 text-xs font-bold inline-flex items-center gap-1 cursor-pointer bg-red-50 hover:bg-red-100 px-3 py-2 rounded-xl border border-red-200 transition-colors shrink-0"
+                                title="Görseli Sil / Kaldır"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                <span>Kaldır</span>
+                              </button>
+                            )}
                           </div>
                           <p className="text-[11px] text-gray-500">
                             Masaüstü için tavsiye edilen boyut: <strong>21:9 oranında 1920 × 720 px</strong> (veya 1920 × 750 px). Bu oran görselin üstten/alttan kırpılmasını önler ve peluş karakterinizin tam görünmesini sağlar.
@@ -1929,6 +1941,18 @@ export default function AdminDashboardPage() {
                             placeholder="Görsel URL (/images/why_hedgehog.jpg veya https://...)"
                             className="flex-1 w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs"
                           />
+
+                          {settings.whyImageUrl && (
+                            <button
+                              type="button"
+                              onClick={() => setSettings({ ...settings, whyImageUrl: '' })}
+                              className="text-red-500 hover:text-red-700 text-xs font-bold inline-flex items-center gap-1 cursor-pointer bg-red-50 hover:bg-red-100 px-3 py-2 rounded-xl border border-red-200 transition-colors shrink-0"
+                              title="Görseli Sil / Kaldır"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Kaldır</span>
+                            </button>
+                          )}
                         </div>
                         <p className="text-[11px] text-gray-500">
                           Peluş kumaş dokusu, özel dokuma etiket veya peluş detayı gösteren görsel önerilir.

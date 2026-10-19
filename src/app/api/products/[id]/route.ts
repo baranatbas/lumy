@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getProduct, updateProduct, deleteProduct } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export const runtime = 'edge';
 
@@ -12,7 +13,11 @@ export async function GET(
     if (!product) {
       return NextResponse.json({ success: false, error: 'Ürün bulunamadı' }, { status: 404 });
     }
-    return NextResponse.json({ success: true, data: product });
+    return NextResponse.json({ success: true, data: product }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
+      }
+    });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
@@ -43,6 +48,10 @@ export async function PUT(
       return NextResponse.json({ success: false, error: 'Ürün güncellenemedi' }, { status: 404 });
     }
 
+    try {
+      revalidatePath('/', 'page');
+    } catch (e) {}
+
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -58,6 +67,11 @@ export async function DELETE(
     if (!deleted) {
       return NextResponse.json({ success: false, error: 'Ürün bulunamadı' }, { status: 404 });
     }
+
+    try {
+      revalidatePath('/', 'page');
+    } catch (e) {}
+
     return NextResponse.json({ success: true, message: 'Ürün başarıyla silindi' });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
