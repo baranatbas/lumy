@@ -36,7 +36,7 @@ const DEFAULT_WHY_FEATURES: WhyFeature[] = [
 ];
 
 export default function WhyLumySection({ settings }: WhyLumySectionProps) {
-  const kicker = settings.whyKicker || 'NEDEN LUMY TOYS?';
+  const kicker = settings.whyKicker !== undefined ? settings.whyKicker : 'NEDEN LUMY TOYS?';
   const note = settings.whyNote || 'Gerçek ortaklıklar. Kalıcı anılar. ♡';
   const labelImage =
     (settings.whyImageUrl && !settings.whyImageUrl.includes('photo-1584917865442'))
@@ -111,12 +111,14 @@ export default function WhyLumySection({ settings }: WhyLumySectionProps) {
           {/* Right Column: 4 Value Propositions */}
           <div className="lg:col-span-7 space-y-8">
             <div>
-              <span
-                style={{ color: 'var(--text-muted)' }}
-                className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block mb-2"
-              >
-                {kicker}
-              </span>
+              {kicker && kicker.trim() !== '' && kicker.trim().toUpperCase() !== 'N/A' && (
+                <span
+                  style={{ color: 'var(--text-muted)' }}
+                  className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block mb-2"
+                >
+                  {kicker}
+                </span>
+              )}
               <h2
                 style={{ color: 'var(--text-main)' }}
                 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight"

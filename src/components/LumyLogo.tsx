@@ -35,9 +35,8 @@ export default function LumyLogo({
   className = '',
 }: LumyLogoProps) {
   const [hasError, setHasError] = React.useState(false);
-  const isDark = variant === 'dark';
-  // Use the high-res colorful original logo as primary default
-  const defaultLogoSrc = isDark ? '/images/lumy_logo_lime.png' : '/images/lumy_logo_color.png';
+  // Use the official site SVG logo as primary default
+  const defaultLogoSrc = '/images/site_logo.svg';
 
   // If custom logo is set in settings/admin and hasn't errored
   const activeLogoSrc = (!hasError && logoUrl && logoUrl.trim() !== '') ? logoUrl : defaultLogoSrc;

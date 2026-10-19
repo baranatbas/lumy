@@ -46,7 +46,7 @@ export default function ProductCatalog({ products, categories, settings }: Produ
     }
   };
 
-  const kicker = settings.productsKicker || 'ÜRÜNLERİMİZ';
+  const kicker = settings.productsKicker !== undefined ? settings.productsKicker : 'ÜRÜNLERİMİZ';
   const title = settings.productsTitle || 'Bir oyuncaktan çok daha fazlası.';
   const subtitle =
     settings.productsSubtitle ||
@@ -143,12 +143,14 @@ export default function ProductCatalog({ products, categories, settings }: Produ
           
           {/* Left Column: Heading and Description */}
           <div className="lg:col-span-5 space-y-5">
-            <span
-              style={{ color: 'var(--text-muted)' }}
-              className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block"
-            >
-              {kicker}
-            </span>
+            {kicker && kicker.trim() !== '' && kicker.trim().toUpperCase() !== 'N/A' && (
+              <span
+                style={{ color: 'var(--text-muted)' }}
+                className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase block"
+              >
+                {kicker}
+              </span>
+            )}
 
             <h2
               style={{ color: 'var(--text-main)' }}

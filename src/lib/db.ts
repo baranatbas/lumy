@@ -284,44 +284,46 @@ export async function getDatabase(): Promise<DatabaseSchema> {
         headers: { Authorization: `Bearer ${KV_TOKEN}` },
         cache: 'no-store'
       });
-      const json = await res.json();
-      if (json && json.result) {
-        const parsed = typeof json.result === 'string' ? JSON.parse(json.result) : json.result;
-        if (parsed && parsed.settings && parsed.products) {
-          const defaults = JSON.parse(JSON.stringify(defaultDbData)) as DatabaseSchema;
-          parsed.settings = {
-            ...defaults.settings,
-            ...parsed.settings,
-            heroKicker: parsed.settings.heroKicker || defaults.settings.heroKicker,
-            heroTitle:
-              parsed.settings.heroTitle === 'Her Yaşa Neşe Katan Yumuşacık Peluş Dünyası'
-                ? defaults.settings.heroTitle
-                : (parsed.settings.heroTitle || defaults.settings.heroTitle),
-            heroImageUrl: parsed.settings.heroImageUrl || defaults.settings.heroImageUrl,
-            heroCtaText: parsed.settings.heroCtaText || defaults.settings.heroCtaText,
-            processSteps: (parsed.settings.processSteps && parsed.settings.processSteps.length > 0)
-              ? parsed.settings.processSteps
-              : defaults.settings.processSteps,
-            whyFeatures: (parsed.settings.whyFeatures && parsed.settings.whyFeatures.length > 0)
-              ? parsed.settings.whyFeatures
-              : defaults.settings.whyFeatures,
-            logoUrl: parsed.settings.logoUrl || defaults.settings.logoUrl || '/images/lumy_logo_color.png',
-            spotlight1Title: parsed.settings.spotlight1Title || defaults.settings.spotlight1Title,
-            spotlight1Image: parsed.settings.spotlight1Image || defaults.settings.spotlight1Image,
-            spotlight1CategoryId: parsed.settings.spotlight1CategoryId || defaults.settings.spotlight1CategoryId,
-            spotlight2Title: parsed.settings.spotlight2Title || defaults.settings.spotlight2Title,
-            spotlight2Image: parsed.settings.spotlight2Image || defaults.settings.spotlight2Image,
-            spotlight2CategoryId: parsed.settings.spotlight2CategoryId || defaults.settings.spotlight2CategoryId,
-          };
-          memoryDb = parsed as DatabaseSchema;
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.result) {
+          const parsed = typeof json.result === 'string' ? JSON.parse(json.result) : json.result;
+          if (parsed && parsed.settings && parsed.products) {
+            const defaults = JSON.parse(JSON.stringify(defaultDbData)) as DatabaseSchema;
+            parsed.settings = {
+              ...defaults.settings,
+              ...parsed.settings,
+              heroKicker: parsed.settings.heroKicker ?? defaults.settings.heroKicker,
+              heroTitle: parsed.settings.heroTitle ?? defaults.settings.heroTitle,
+              heroImageUrl: parsed.settings.heroImageUrl ?? defaults.settings.heroImageUrl,
+              heroCtaText: parsed.settings.heroCtaText ?? defaults.settings.heroCtaText,
+              processSteps: (parsed.settings.processSteps && parsed.settings.processSteps.length > 0)
+                ? parsed.settings.processSteps
+                : defaults.settings.processSteps,
+              whyFeatures: (parsed.settings.whyFeatures && parsed.settings.whyFeatures.length > 0)
+                ? parsed.settings.whyFeatures
+                : defaults.settings.whyFeatures,
+              logoUrl: parsed.settings.logoUrl ?? defaults.settings.logoUrl,
+              spotlight1Title: parsed.settings.spotlight1Title ?? defaults.settings.spotlight1Title,
+              spotlight1Image: parsed.settings.spotlight1Image ?? defaults.settings.spotlight1Image,
+              spotlight1CategoryId: parsed.settings.spotlight1CategoryId ?? defaults.settings.spotlight1CategoryId,
+              spotlight2Title: parsed.settings.spotlight2Title ?? defaults.settings.spotlight2Title,
+              spotlight2Image: parsed.settings.spotlight2Image ?? defaults.settings.spotlight2Image,
+              spotlight2CategoryId: parsed.settings.spotlight2CategoryId ?? defaults.settings.spotlight2CategoryId,
+            };
+            memoryDb = parsed as DatabaseSchema;
+            return memoryDb;
+          }
+        } else if (json && json.result === null) {
+          // If KV is completely empty on first boot, seed it with defaultDbData
+          const initial = JSON.parse(JSON.stringify(defaultDbData)) as DatabaseSchema;
+          memoryDb = initial;
+          await saveDatabase(initial);
           return memoryDb;
         }
       } else {
-        // If KV is empty on first boot, seed it with defaultDbData
-        const initial = JSON.parse(JSON.stringify(defaultDbData)) as DatabaseSchema;
-        memoryDb = initial;
-        await saveDatabase(initial);
-        return memoryDb;
+        const errText = await res.text();
+        console.warn(`Upstash KV returned HTTP ${res.status}:`, errText);
       }
     } catch (kvErr) {
       console.warn('Failed reading from KV cloud, falling back to local data:', kvErr);
@@ -340,7 +342,7 @@ export async function saveDatabase(db: DatabaseSchema): Promise<void> {
   // 1. If KV credentials exist, persist to cloud database
   if (KV_URL && KV_TOKEN) {
     try {
-      await fetch(`${KV_URL}/set/${KV_KEY}`, {
+      const res = await fetch(`${KV_URL}/set/${KV_KEY}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${KV_TOKEN}`,
@@ -348,11 +350,16 @@ export async function saveDatabase(db: DatabaseSchema): Promise<void> {
         },
         body: JSON.stringify(db)
       });
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error(`Failed saving to KV cloud. HTTP status ${res.status}:`, errText);
+        throw new Error(`Upstash save failed: HTTP ${res.status} ${errText}`);
+      }
     } catch (kvErr) {
       console.error('Failed saving to KV cloud:', kvErr);
+      throw kvErr;
     }
   }
-
 }
 
 // Site Settings
@@ -425,6 +432,9 @@ export async function deleteProduct(id: string): Promise<boolean> {
   const initialLength = db.products.length;
   db.products = db.products.filter(p => p.id !== id);
   if (db.products.length !== initialLength) {
+    if (db.settings.heroProductId === id) {
+      db.settings.heroProductId = '';
+    }
     await saveDatabase(db);
     return true;
   }

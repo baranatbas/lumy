@@ -9,15 +9,14 @@ interface HeroProps {
 }
 
 export default function Hero({ settings, heroProduct }: HeroProps) {
-  const kicker = settings.heroKicker || 'ÖZEL TASARIM & MARKA PELUŞLARI';
+  const kicker = settings.heroKicker !== undefined ? settings.heroKicker : 'ÖZEL TASARIM & MARKA PELUŞLARI';
   const title = settings.heroTitle || 'Fikirlerinizi sarılası peluşlara dönüştürüyoruz.';
 
-  // Prioritize the full photographic studio banner matching the mockup
+  // Prioritize configured hero image, without forcing resurrection of old assets
   const heroImage =
-    settings.heroImageUrl ||
-    settings.heroCustomImageUrl ||
-    (settings.heroProductId && heroProduct?.image) ||
-    '/images/hero_hedgehog_banner.jpg';
+    settings.heroImageUrl !== undefined
+      ? settings.heroImageUrl
+      : (settings.heroCustomImageUrl || (settings.heroProductId && heroProduct?.image) || '/images/hero_hedgehog_banner.jpg');
 
   return (
     <section
@@ -35,19 +34,21 @@ export default function Hero({ settings, heroProduct }: HeroProps) {
               className="md:hidden w-full h-full object-cover object-center select-none"
             />
             {/* Desktop Image (>= md) */}
-            <img
-              src={heroImage}
-              alt={title}
-              className="hidden md:block w-full h-full object-cover object-[center_30%] select-none"
-            />
+            {heroImage && (
+              <img
+                src={heroImage}
+                alt={title}
+                className="hidden md:block w-full h-full object-cover object-[center_30%] select-none"
+              />
+            )}
           </>
-        ) : (
+        ) : heroImage ? (
           <img
             src={heroImage}
             alt={title}
             className="w-full h-full object-cover object-[center_30%] select-none"
           />
-        )}
+        ) : null}
         {/* Adjustable overlay on mobile so text is legible or fully transparent if disabled */}
         {(typeof settings.heroMobileOverlayOpacity === 'number' ? settings.heroMobileOverlayOpacity : 35) > 0 && (
           <div
@@ -65,14 +66,16 @@ export default function Hero({ settings, heroProduct }: HeroProps) {
         <div className="max-w-md sm:max-w-lg lg:max-w-xl space-y-4 sm:space-y-5 text-left">
           
           {/* Small Uppercase Kicker */}
-          <div className="inline-block">
-            <span
-              style={{ color: 'var(--text-muted)' }}
-              className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase"
-            >
-              {kicker}
-            </span>
-          </div>
+          {kicker && kicker.trim() !== '' && kicker.trim().toUpperCase() !== 'N/A' && (
+            <div className="inline-block">
+              <span
+                style={{ color: 'var(--text-muted)' }}
+                className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase"
+              >
+                {kicker}
+              </span>
+            </div>
+          )}
 
           {/* Main Headline */}
           <h1
